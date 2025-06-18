@@ -236,7 +236,15 @@
     <div class="footer">
         &copy; {{ site.time | date: '%Y' }}. All rights reserved.
         <br>
-        <a href="https://github.com/YouXam" target="_blank">Youxam</a>
+        <a href="https://github.com/YouXam" target="_blank">YouXam</a>
+        {% if site.github.repository_url %}
+        |
+        {% assign github_path = page.path %}
+        {% if page.path contains '.html' %}
+          {% assign github_path = page.path | replace: '.html', '.md' %}
+        {% endif %}
+        <a href="{{ site.github.repository_url }}/blob/{{ site.github.source.branch }}/{{ github_path }}" target="_blank">在 Github 中查看本页</a>
+        {% endif %}
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/5.0.0/anchor.min.js"
         integrity="sha512-byAcNWVEzFfu+tZItctr+WIMUJvpzT2kokkqcBq+VsrM3OrC5Aj9E2gh+hHpU0XNA3wDmX4sDbV5/nkhvTrj4w=="
@@ -290,6 +298,10 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelectorAll('a[href*=".md"]').forEach(link => {
                 const url = new URL(link.href);
+                // 跳过 GitHub 链接
+                if (url.hostname === 'github.com') {
+                    return;
+                }
                 if (url.pathname.endsWith('/readme.md')) {
                     url.pathname = url.pathname.replace(/readme\.md$/, '');
                 } else {

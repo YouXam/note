@@ -35,6 +35,9 @@ jobs:
         with:
           source: ./
           destination: ./_site
+        env:
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JEKYLL_REPOSITORY: ${{ github.repository }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
